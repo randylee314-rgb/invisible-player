@@ -1,3 +1,38 @@
+import { world, ItemStack, Player } from "@minecraft/server";
+
+// Listen for item use (Amethyst Shard)
+world.events.itemUse.subscribe((eventData) => {
+    const player = eventData.source;  // The player who used the item
+    const item = eventData.item;      // The item being used by the player
+
+    // Check if the player used an Amethyst Shard (use the item id for Amethyst Shard)
+    if (item.id === "minecraft:amethyst_shard") {
+        // Store a flag for the player that they used an Amethyst Shard
+        player.getTags().add("amethystUsed");
+    }
+});
+
+// Listen for the chat event
+world.events.chat.subscribe((eventData) => {
+    const player = eventData.sender;  // The player sending the message
+    const message = eventData.message;
+
+    // Check if the player has the "amethystUsed" tag (i.e., they've used the Amethyst Shard)
+    if (player.hasTag("amethystUsed")) {
+        // Remove the player's name from the message
+        const newMessage = message.replace(player.name, "");
+        
+        // Send the new message (without the player's name)
+        world.getDimension("overworld").runCommandAsync(`tellraw @a {"rawtext":[{"text":"${newMessage}"}]}`);
+
+        // Cancel the default chat broadcast to prevent the original message from appearing
+        eventData.cancel = true;
+
+        // Remove the tag after the message is sent
+        player.getTags().remove("amethystUsed");
+    }
+});
+
 Player.onPlayerUseItemTypeOnBlockType(Data.itemPicker(MinecraftItemTypes.AmethystShard), Data.blockPicker(MinecraftBlockTypes.NetheriteBlock), function (player) {
     let myPlayer: mcServer.Vector3 = null
     World.spawnParticle(BasicParticleTypes.BlueFlameParticle, myPlayer)
