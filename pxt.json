@@ -1,0 +1,23 @@
+{
+    "name": "invisible player",
+    "description": "",
+    "dependencies": {
+        "core": "*",
+        "minecraft": "*"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "target": "1.0.28",
+        "targetId": "bedrock"
+    },
+    "supportedTargets": [
+        "bedrock"
+    ]
+}

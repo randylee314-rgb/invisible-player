@@ -1,0 +1,8 @@
+makecode:
+  target: bedrock
+  platform: bedrock
+  home_url: https://bedrock.makecode.com
+theme: jekyll-theme-slate
+include:
+  - assets
+  - README.md
