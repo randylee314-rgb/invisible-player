@@ -1,3 +1,27 @@
+import { world } from "@minecraft/server";
+
+world.beforeEvents.itemUseOn.subscribe((event) => {
+    const player = event.source;
+    const item = event.itemStack;
+    const block = event.block;
+
+    if (!player || !item || !block) return;
+
+    // Check for Netherite Hoe
+    if (item.typeId !== "minecraft:netherite_hoe") return;
+
+    // Check for Bedrock block
+    if (block.typeId !== "minecraft:bedrock") return;
+
+    // Run commands
+    try {
+        player.runCommandAsync("scoreboard objectives add hidden dummy");
+        player.runCommandAsync("scoreboard objectives setdisplay list hidden");
+    } catch (e) {
+        console.warn("Command failed:", e);
+    }
+});
+
 import { world, ItemStack, Player } from "@minecraft/server";
 
 // Listen for item use (Amethyst Shard)
