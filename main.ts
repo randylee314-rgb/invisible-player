@@ -1,5 +1,25 @@
 import { world } from "@minecraft/server";
 
+world.beforeEvents.entityHitBlock.subscribe((event) => {
+    const entity = event.entity;
+    const block = event.block;
+    const item = event.itemStack;
+
+    // Make sure it's a player
+    if (!entity || entity.typeId !== "minecraft:player") return;
+
+    // Check held item
+    if (!item || item.typeId !== "minecraft:netherite_hoe") return;
+
+    // Check block hit
+    if (block.typeId !== "minecraft:bedrock") return;
+
+    // Clear all effects
+    entity.runCommandAsync("effect @s clear");
+});
+
+import { world } from "@minecraft/server";
+
 world.beforeEvents.itemUseOn.subscribe((event) => {
     const player = event.source;
     const item = event.itemStack;
